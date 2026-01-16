@@ -2,9 +2,12 @@ const canvas = document.getElementById('tetris');
 const context = canvas.getContext('2d');
 const nextCanvas = document.getElementById('next');
 const nextContext = nextCanvas.getContext('2d');
+const holdCanvas = document.getElementById('hold');
+const holdContext = holdCanvas.getContext('2d');
 
 context.scale(20, 20);
 nextContext.scale(20, 20);
+holdContext.scale(20, 20);
 
 // Tetromino Definitions
 function createPiece(type) {
@@ -178,7 +181,39 @@ function playerReset() {
         player.score = 0;
         updateScore();
     }
+    if (collide(arena, player)) {
+        // Game Over
+        arena.forEach(row => row.fill(0));
+        player.score = 0;
+        updateScore();
+    }
     drawNext();
+    drawHold();
+    player.canHold = true;
+}
+
+function playerHold() {
+    if (!player.canHold) {
+        return;
+    }
+
+    if (player.hold === null) {
+        player.hold = player.matrix;
+        player.matrix = player.next;
+        player.next = createPiece('ILJOTSZ'['ILJOTSZ'.length * Math.random() | 0]);
+        drawNext();
+    } else {
+        const temp = player.matrix;
+        player.matrix = player.hold;
+        player.hold = temp;
+    }
+
+    player.pos.y = 0;
+    player.pos.x = (arena[0].length / 2 | 0) -
+        (player.matrix[0].length / 2 | 0);
+
+    player.canHold = false;
+    drawHold();
 }
 
 function playerRotate(dir) {
@@ -211,6 +246,13 @@ function arenaSweep() {
 
         player.score += rowCount * 10;
         rowCount *= 2;
+
+        // Trigger Flash Effect
+        const gameContainer = document.getElementById('game-container');
+        gameContainer.classList.add('flash');
+        setTimeout(() => {
+            gameContainer.classList.remove('flash');
+        }, 200);
     }
 }
 
@@ -243,6 +285,31 @@ function drawNext() {
     });
 }
 
+function drawHold() {
+    holdContext.fillStyle = '#000';
+    holdContext.fillRect(0, 0, holdCanvas.width, holdCanvas.height);
+
+    if (!player.hold) return;
+
+    const offset = {
+        x: (4 - player.hold[0].length) / 2,
+        y: (4 - player.hold.length) / 2,
+    };
+
+    player.hold.forEach((row, y) => {
+        row.forEach((value, x) => {
+            if (value !== 0) {
+                holdContext.fillStyle = colors[value];
+                holdContext.fillRect(x + offset.x, y + offset.y, 1, 1);
+
+                holdContext.lineWidth = 0.05;
+                holdContext.strokeStyle = 'white';
+                holdContext.strokeRect(x + offset.x, y + offset.y, 1, 1);
+            }
+        });
+    });
+}
+
 let dropCounter = 0;
 let dropInterval = 1000;
 let lastTime = 0;
@@ -266,6 +333,8 @@ const player = {
     pos: { x: 0, y: 0 },
     matrix: null,
     next: null,
+    hold: null,
+    canHold: true,
     score: 0,
 };
 
@@ -289,6 +358,8 @@ document.addEventListener('keydown', event => {
         arenaSweep();
         updateScore();
         dropCounter = 0; // Reset drop timer
+    } else if (event.keyCode === 16) { // Shift (Hold)
+        playerHold();
     }
 });
 
