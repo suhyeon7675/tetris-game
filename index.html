@@ -10,16 +10,25 @@
 </head>
 
 <body>
-    <div id="game-container">
-        <div id="score-board">
-            Score: <span id="score">0</span>
+    <div id="game-wrapper">
+        <div id="game-container">
+            <canvas id="tetris" width="200" height="400"></canvas>
         </div>
-        <canvas id="tetris" width="200" height="400"></canvas>
-        <div id="controls-hint">
-            <p>← → : Move</p>
-            <p>↑ : Rotate</p>
-            <p>↓ : Soft Drop</p>
-            <p>Space : Hard Drop</p>
+        <div id="sidebar">
+            <div id="score-board">
+                Score<br>
+                <span id="score">0</span>
+            </div>
+            <div id="next-piece">
+                Next<br>
+                <canvas id="next" width="80" height="80"></canvas>
+            </div>
+            <div id="controls-hint">
+                <p>← → : Move</p>
+                <p>↑ : Rotate</p>
+                <p>↓ : Soft Drop</p>
+                <p>Space : Drop</p>
+            </div>
         </div>
     </div>
     <script src="main.js"></script>

@@ -1,7 +1,10 @@
 const canvas = document.getElementById('tetris');
 const context = canvas.getContext('2d');
+const nextCanvas = document.getElementById('next');
+const nextContext = nextCanvas.getContext('2d');
 
 context.scale(20, 20);
+nextContext.scale(20, 20);
 
 // Tetromino Definitions
 function createPiece(type) {
@@ -159,7 +162,12 @@ function playerMove(offset) {
 
 function playerReset() {
     const pieces = 'ILJOTSZ';
-    player.matrix = createPiece(pieces[pieces.length * Math.random() | 0]);
+    if (player.next === null) {
+        player.next = createPiece(pieces[pieces.length * Math.random() | 0]);
+    }
+    player.matrix = player.next;
+    player.next = createPiece(pieces[pieces.length * Math.random() | 0]);
+
     player.pos.y = 0;
     player.pos.x = (arena[0].length / 2 | 0) -
         (player.matrix[0].length / 2 | 0);
@@ -170,6 +178,7 @@ function playerReset() {
         player.score = 0;
         updateScore();
     }
+    drawNext();
 }
 
 function playerRotate(dir) {
@@ -209,6 +218,31 @@ function updateScore() {
     document.getElementById('score').innerText = player.score;
 }
 
+function drawNext() {
+    nextContext.fillStyle = '#000';
+    nextContext.fillRect(0, 0, nextCanvas.width, nextCanvas.height);
+
+    // Center the piece in 4x4 grid (canvas is 80x80 = 4x4 units of 20px)
+    // Most pieces are 3x3 or 4x4 (I, O)
+    const offset = {
+        x: (4 - player.next[0].length) / 2,
+        y: (4 - player.next.length) / 2,
+    };
+
+    player.next.forEach((row, y) => {
+        row.forEach((value, x) => {
+            if (value !== 0) {
+                nextContext.fillStyle = colors[value];
+                nextContext.fillRect(x + offset.x, y + offset.y, 1, 1);
+
+                nextContext.lineWidth = 0.05;
+                nextContext.strokeStyle = 'white';
+                nextContext.strokeRect(x + offset.x, y + offset.y, 1, 1);
+            }
+        });
+    });
+}
+
 let dropCounter = 0;
 let dropInterval = 1000;
 let lastTime = 0;
@@ -231,6 +265,7 @@ const arena = createMatrix(10, 20);
 const player = {
     pos: { x: 0, y: 0 },
     matrix: null,
+    next: null,
     score: 0,
 };
 

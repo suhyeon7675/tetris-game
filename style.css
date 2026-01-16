@@ -10,33 +10,60 @@ body {
     overflow: hidden;
 }
 
-#game-container {
+/* Wrapper to hold game and sidebar side-by-side */
+#game-wrapper {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
+    gap: 20px;
+    transform: scale(1.5);
+    /* Scale up the whole UI by 1.5x */
+}
+
+#game-container {
     border: 2px solid #fff;
-    padding: 20px;
     background-color: #000;
     box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+    padding: 2px;
 }
 
-canvas {
-    border: 2px solid #333;
+canvas#tetris {
     background-color: #111;
     display: block;
-    margin: 10px 0;
 }
 
-#score-board {
+#sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100px;
+}
+
+#score-board,
+#next-piece {
+    background-color: #000;
+    border: 2px solid #fff;
+    padding: 10px;
+    text-align: center;
+    font-size: 12px;
+    color: #ff0;
+    box-shadow: 0 0 10px rgba(255, 255, 0, 0.2);
+}
+
+#score {
     font-size: 16px;
-    margin-bottom: 10px;
-    color: #ff0; /* Bright yellow for score */
+    display: block;
+    margin-top: 5px;
+    color: #fff;
+}
+
+canvas#next {
+    display: block;
+    margin: 5px auto 0;
+    background-color: #111;
 }
 
 #controls-hint {
-    margin-top: 10px;
-    font-size: 10px;
+    font-size: 8px;
     color: #aaa;
-    text-align: center;
-    line-height: 1.5;
+    line-height: 1.6;
 }
