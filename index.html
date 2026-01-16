@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Tetris</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="game-container">
+        <div id="score-board">
+            Score: <span id="score">0</span>
+        </div>
+        <canvas id="tetris" width="200" height="400"></canvas>
+        <div id="controls-hint">
+            <p>← → : Move</p>
+            <p>↑ : Rotate</p>
+            <p>↓ : Soft Drop</p>
+            <p>Space : Hard Drop</p>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+
+</html>

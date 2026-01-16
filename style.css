@@ -1,0 +1,42 @@
+body {
+    background-color: #202028;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+#game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid #fff;
+    padding: 20px;
+    background-color: #000;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+}
+
+canvas {
+    border: 2px solid #333;
+    background-color: #111;
+    display: block;
+    margin: 10px 0;
+}
+
+#score-board {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #ff0; /* Bright yellow for score */
+}
+
+#controls-hint {
+    margin-top: 10px;
+    font-size: 10px;
+    color: #aaa;
+    text-align: center;
+    line-height: 1.5;
+}
